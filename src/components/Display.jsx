@@ -4,7 +4,7 @@ import { Environment, OrbitControls } from '@react-three/drei';
 
 const Display = () => {
     return (
-        <div className="w-screen h-screen bg-red-500">
+        <div className="w-screen h-screen">
             <Canvas 
                 style={{ width: '100%', height: '100%' }}
                 camera={{ position: [5, 5, 5], fov: 50 }}
@@ -14,10 +14,10 @@ const Display = () => {
                 }}
             >
                 <ambientLight intensity={1} />
-                <directionalLight position={[5, 5, 5]} intensity={1} />
+                <directionalLight position={[5, 5, 5]} intensity={0.4} />
                 <Environment preset="sunset" />
 
-                <CubeModel scale={0.1} />
+                <CubeModel scale={3} />
                 <OrbitControls
                     enableZoom={true}
                     enablePan={true}
