@@ -1,18 +1,19 @@
-import React, { useRef, useMemo } from 'react';
-import { useTexture } from '@react-three/drei';
+import React, { useRef, useMemo, useEffect } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Environment, OrbitControls, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
-function CubeModel(props) {
+// CubeModel component with rotation control
+function CubeModel({ rotationY, ...props }) {
   const meshRef = useRef();
 
   // Load the four textures
   const textures = useTexture({
-    front: '/front.jpg',    // Front face texture
-    back: '/front.jpg',      // Back face texture
-    left: '/front.jpg',      // Left face texture
-    right: '/front.jpg',    // Right face texture
+    front: '/front.jpg',
+    back: '/front.jpg',
+    left: '/front.jpg',
+    right: '/front.jpg',
   });
-  
 
   // Create materials array for each face
   const materials = useMemo(() => [
@@ -24,11 +25,21 @@ function CubeModel(props) {
     new THREE.MeshStandardMaterial({ map: textures.back }),  // Back face (-Z)
   ], [textures]);
 
+  // Update rotation based on scroll
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y = THREE.MathUtils.lerp(
+        meshRef.current.rotation.y,
+        rotationY,
+        0.1
+      );
+    }
+  });
+
   return (
     <mesh ref={meshRef} {...props} material={materials}>
       <boxGeometry args={[1, 1, 1]} />
     </mesh>
   );
 }
-
-export default CubeModel;
+export default CubeModel
