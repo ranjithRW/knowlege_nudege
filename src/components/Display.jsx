@@ -8,7 +8,7 @@ const SmoothCube = ({ targetRotation }) => {
     return (
         <CubeModel
             rotationY={targetRotation}
-            position={[0.4, 0.4, 0]}
+            position={[0, 0.4, 0]}
             scale={2.6}
         />
     );
@@ -16,7 +16,11 @@ const SmoothCube = ({ targetRotation }) => {
 
 const Display = () => {
     const scrollContainerRef = useRef();
-    const [targetRotation, setTargetRotation] = useState(0);
+
+    // Define the initial rotation offset
+    const initialRotationOffset = Math.PI / 6;
+    // Initialize targetRotation state with the initial offset
+    const [targetRotation, setTargetRotation] = useState(initialRotationOffset);
     const [activeSection, setActiveSection] = useState(0);
 
     const paragraphData = [
@@ -37,16 +41,27 @@ const Display = () => {
             const scrollTop = scrollContainer.scrollTop;
             const scrollHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight;
             const sectionCount = paragraphData.length;
-            const sectionHeight = scrollHeight / sectionCount;
-            const sectionIndex = Math.min(Math.floor(scrollTop / sectionHeight), sectionCount - 1);
+            // Avoid division by zero if scrollHeight is 0 (content fits in viewport)
+            const sectionHeight = scrollHeight > 0 ? scrollHeight / sectionCount : 0;
+
+            // Calculate section index, ensuring it stays within bounds
+            const sectionIndex = sectionHeight > 0
+                ? Math.min(Math.floor(scrollTop / sectionHeight), sectionCount - 1)
+                : 0; // If no scrolling is possible, stay at the first section
 
             setActiveSection(sectionIndex);
-            setTargetRotation(sectionIndex * (Math.PI / 2));
+
+            // Calculate the target rotation: initial offset + (section index * 90 degrees)
+            const sectionRotation = sectionIndex * (Math.PI / 2); // 90 degrees per section
+            setTargetRotation(sectionRotation + initialRotationOffset);
         };
+
+        // Initial call to set correct state based on initial scroll position (usually 0)
+        handleScroll();
 
         scrollContainer.addEventListener('scroll', handleScroll);
         return () => scrollContainer.removeEventListener('scroll', handleScroll);
-    }, [paragraphData.length]);
+    }, [paragraphData.length, initialRotationOffset]); // Add initialRotationOffset as dependency if it could change
 
     return (
         <div className="flex w-screen h-screen">
@@ -60,16 +75,16 @@ const Display = () => {
                         <div
                             key={index}
                             className={`p-6 bg-white rounded-lg shadow-md min-h-[250px] flex flex-col justify-center
-                transition-all duration-300 border-2 ${activeSection === index
+                                transition-all duration-300 border-2 ${activeSection === index
                                     ? 'border-blue-500 scale-105'
                                     : 'border-transparent scale-100'
                                 }`}
                         >
                             <h3 className="text-2xl font-semibold mb-4 text-blue-600">{item.title}</h3>
                             <p className="text-gray-700 text-lg leading-relaxed">{item.content}</p>
-                            <div className="mt-4 text-sm text-gray-500">
+                            {/* <div className="mt-4 text-sm text-gray-500">
                                 Face {index + 1} of 4
-                            </div>
+                            </div> */}
                         </div>
                     ))}
                 </div>
@@ -77,13 +92,14 @@ const Display = () => {
 
             <div className="w-1/2 h-full">
                 <Canvas
-                    camera={{ position: [3, 2, 5], fov: 50 }}
+                    camera={{ position: [3, 1.2, 5], fov: 50 }}
                     gl={{ alpha: true }}
                     onCreated={({ gl }) => gl.setClearColor(0x00000000, 0)}
                 >
                     <ambientLight intensity={1} />
                     <directionalLight position={[5, 5, 5]} intensity={0.5} />
                     <Environment preset="city" />
+                    {/* Pass the calculated targetRotation */}
                     <SmoothCube targetRotation={targetRotation} />
                     <OrbitControls enabled={false} />
                 </Canvas>
