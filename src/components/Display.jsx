@@ -65,8 +65,7 @@ const Display = () => {
               </div>
             </div>
           ))}
-          {/* Extra padding at the end for smooth completion */}
-          <div className="h-96"></div>
+       
         </div>
       </div>
 
