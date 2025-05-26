@@ -15,14 +15,14 @@ function CubeModel({ rotationY, ...props }) {
     right: '/04.png',
   });
 
-  // Create materials array for each face
+  // Create materials array for each face with proper texture settings
   const materials = useMemo(() => [
-    new THREE.MeshStandardMaterial({ map: textures.right }), // Right face (+X)
-    new THREE.MeshStandardMaterial({ map: textures.left }),  // Left face (-X)
-    new THREE.MeshStandardMaterial({ color: 'white' }),       // Top face (+Y)
-    new THREE.MeshStandardMaterial({ color: 'white' }),       // Bottom face (-Y)
-    new THREE.MeshStandardMaterial({ map: textures.front }), // Front face (+Z)
-    new THREE.MeshStandardMaterial({ map: textures.back }),  // Back face (-Z)
+    new THREE.MeshLambertMaterial({ map: textures.right }), // Right face (+X)
+    new THREE.MeshLambertMaterial({ map: textures.left }),  // Left face (-X)
+    new THREE.MeshLambertMaterial({ color: '#ffffff' }),    // Top face (+Y)
+    new THREE.MeshLambertMaterial({ color: '#ffffff' }),    // Bottom face (-Y)
+    new THREE.MeshLambertMaterial({ map: textures.front }), // Front face (+Z)
+    new THREE.MeshLambertMaterial({ map: textures.back }),  // Back face (-Z)
   ], [textures]);
 
   // Update rotation based on scroll
@@ -42,4 +42,5 @@ function CubeModel({ rotationY, ...props }) {
     </mesh>
   );
 }
+
 export default CubeModel
