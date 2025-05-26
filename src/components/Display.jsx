@@ -29,20 +29,20 @@ const Display = () => {
 
   const paragraphData = [
     {
-      title: "Front Face",
-      content: "This face represents the primary interface of the cube, featuring a carefully designed pattern that aligns with our brand identity and showcases the main visual elements."
+      title: "Email first delivery",
+      content: "Nudges arrive directly in your team’s inbox — no login or platform fatigue."
     },
     {
-      title: "Right Face", 
-      content: "The right face demonstrates the cube's versatility with complementary design elements that enhance the overall aesthetic while maintaining visual coherence across all surfaces."
+      title: " AI powered Feedback", 
+      content: "Every answer is evaluated in real time against your org’s knowledge base."
     },
     {
-      title: "Back Face",
-      content: "The back face reveals hidden details and intricate patterns that are only visible when the cube is rotated, adding depth and mystery to the overall design experience."
+      title: "Conversational Learning",
+      content: "Users respond like they’re chatting, not testing."
     },
     {
-      title: "Left Face",
-      content: "The left face completes the visual journey with unique textures and materials that respond dynamically to lighting conditions, creating an immersive interactive experience."
+      title: "Spaced repetition and reinforcement",
+      content: "Key concepts are revisited intelligently, boosting retention."
     }
   ];
 
@@ -71,7 +71,7 @@ const Display = () => {
       </div>
 
       {/* Right Side - 3D Canvas */}
-      <div className="w-1/2 h-full">
+      <div className="w-1/2 h-full bg-gray-300">
         <Canvas 
           camera={{ position: [5, 5, 5], fov: 50 }}
           gl={{ alpha: true }}
@@ -84,7 +84,7 @@ const Display = () => {
           <Environment preset="sunset" />
 
           <CubeModel 
-            position={[0, 0, 0]} 
+            position={[0.4, 0.4, 0]} 
             scale={3} 
             rotationY={cubeRotation}
           />
