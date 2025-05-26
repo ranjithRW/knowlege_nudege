@@ -48,7 +48,7 @@ const Display = () => {
       const sectionHeight = scrollHeight / sectionCount;
       const sectionIndex = Math.min(Math.floor(scrollTop / sectionHeight), sectionCount - 1);
 
-      const newRotation = sectionIndex * (Math.PI / 2); // Rotate 90° per section
+      const newRotation = sectionIndex * (Math.PI / 5); // Rotate 90° per section
       setTargetRotation(newRotation);
     };
 

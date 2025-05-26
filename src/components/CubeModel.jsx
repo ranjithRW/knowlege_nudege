@@ -7,11 +7,11 @@ function CubeModel({ rotationY, ...props }) {
   const meshRef = useRef();
 
   // Load 4 textures
-  const textures = useLoader(TextureLoader, [
+  const textures = useLoader(THREE.TextureLoader, [
     '/04.png', // front
-    '/02.png', // back
+    '/03.png', // back
     '/03.png', // left
-    '/01.png'  // right
+    '/04.png'  // right
   ]);
 
   const materials = useMemo(() => [
