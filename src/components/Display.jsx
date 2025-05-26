@@ -1,12 +1,30 @@
 import CubeModel from './CubeModel';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei'; 
-import React from 'react';
-import { useRef,useEffect,useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+
+const SmoothCube = ({ targetRotation }) => {
+  const ref = useRef();
+
+  useFrame(() => {
+    if (ref.current) {
+      // Smoothly interpolate current rotationY to targetRotation
+      ref.current.rotation.y += (targetRotation - ref.current.rotation.y) * 0.05;
+    }
+  });
+
+  return (
+    <CubeModel
+      ref={ref}
+      position={[0.4, 0.4, 0]}
+      scale={3}
+    />
+  );
+};
 
 const Display = () => {
   const scrollContainerRef = useRef();
-  const [cubeRotation, setCubeRotation] = React.useState(0);
+  const [targetRotation, setTargetRotation] = useState(0);
 
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -17,10 +35,8 @@ const Display = () => {
       const scrollHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight;
       const scrollProgress = Math.min(scrollTop / scrollHeight, 1);
       
-      // Rotate cube based on scroll progress
-      // Each paragraph corresponds to a 90-degree rotation (π/2 radians)
-      const targetRotation = scrollProgress * Math.PI * 2 * 0.75; // 3/4 of full rotation for 4 faces
-      setCubeRotation(targetRotation);
+      const newRotation = scrollProgress * Math.PI * 2 * 0.75;
+      setTargetRotation(newRotation);
     };
 
     scrollContainer.addEventListener('scroll', handleScroll);
@@ -33,7 +49,7 @@ const Display = () => {
       content: "Nudges arrive directly in your team’s inbox — no login or platform fatigue."
     },
     {
-      title: " AI powered Feedback", 
+      title: "AI powered Feedback", 
       content: "Every answer is evaluated in real time against your org’s knowledge base."
     },
     {
@@ -51,13 +67,16 @@ const Display = () => {
       {/* Left Side - Text Content */}
       <div 
         ref={scrollContainerRef}
-        className="w-1/2 p-8 overflow-y-auto bg-gray-100 h-full"
+        className="w-1/2 p-8 overflow-y-auto bg-gray-100 h-full scroll-smooth overscroll-contain"
       >
         <h2 className="text-3xl font-bold mb-6">Cube Information</h2>
         
-        <div className="space-y-20">
+        <div className="space-y-20 pb-60">
           {paragraphData.map((item, index) => (
-            <div key={index} className="p-6 bg-white rounded-lg shadow-md min-h-[300px] flex flex-col justify-center">
+            <div 
+              key={index} 
+              className="p-6 bg-white rounded-lg shadow-md min-h-[500px] flex flex-col justify-center"
+            >
               <h3 className="text-2xl font-semibold mb-4 text-blue-600">{item.title}</h3>
               <p className="text-gray-700 text-lg leading-relaxed">{item.content}</p>
               <div className="mt-4 text-sm text-gray-500">
@@ -65,12 +84,11 @@ const Display = () => {
               </div>
             </div>
           ))}
-       
         </div>
       </div>
 
       {/* Right Side - 3D Canvas */}
-      <div className="w-1/2 h-full bg-gray-300">
+      <div className="w-1/2 h-full">
         <Canvas 
           camera={{ position: [5, 5, 5], fov: 50 }}
           gl={{ alpha: true }}
@@ -79,20 +97,15 @@ const Display = () => {
           }}
         >
           <ambientLight intensity={1} />
-          <directionalLight position={[5, 5, 5]} intensity={0.4} />
-          <Environment preset="sunset" />
+          <directionalLight position={[5, 5, 5]} intensity={0.01} />
+          <Environment preset='city' />
 
-          <CubeModel 
-            position={[0.4, 0.4, 0]} 
-            scale={3} 
-            rotationY={cubeRotation}
-          />
+          <SmoothCube targetRotation={targetRotation} />
+
           <OrbitControls
             enableZoom={true}
             enablePan={false}
-            minDistance={3}
-            maxDistance={10}
-            enabled={false} // Disable manual controls to focus on scroll sync
+            enabled={false} // Manual controls disabled
           />
         </Canvas>
       </div>
