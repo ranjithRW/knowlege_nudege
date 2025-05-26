@@ -67,7 +67,7 @@ const Display = () => {
         <div className="flex w-screen h-screen">
             <div
                 ref={scrollContainerRef}
-                className="w-1/2 p-8 overflow-y-auto scroll-smooth"
+                className="w-1/2 p-8 overflow-y-auto scroll-smooth hide-scrollbar"
             >
                 <h2 className="text-3xl font-bold mb-6">Cube Information</h2>
                 <div className="space-y-20">
