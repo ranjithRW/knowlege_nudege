@@ -18,7 +18,8 @@ const Display = () => {
       const scrollProgress = Math.min(scrollTop / scrollHeight, 1);
       
       // Rotate cube based on scroll progress
-      const targetRotation = scrollProgress * Math.PI * 2 * 0.75;
+      // Each paragraph corresponds to a 90-degree rotation (π/2 radians)
+      const targetRotation = scrollProgress * Math.PI * 2 * 0.75; // 3/4 of full rotation for 4 faces
       setCubeRotation(targetRotation);
     };
 
@@ -29,15 +30,15 @@ const Display = () => {
   const paragraphData = [
     {
       title: "Email first delivery",
-      content: "Nudges arrive directly in your team's inbox — no login or platform fatigue."
+      content: "Nudges arrive directly in your team’s inbox — no login or platform fatigue."
     },
     {
-      title: "AI powered Feedback", 
-      content: "Every answer is evaluated in real time against your org's knowledge base."
+      title: " AI powered Feedback", 
+      content: "Every answer is evaluated in real time against your org’s knowledge base."
     },
     {
       title: "Conversational Learning",
-      content: "Users respond like they're chatting, not testing."
+      content: "Users respond like they’re chatting, not testing."
     },
     {
       title: "Spaced repetition and reinforcement",
@@ -64,6 +65,7 @@ const Display = () => {
               </div>
             </div>
           ))}
+          {/* Extra padding at the end for smooth completion */}
           <div className="h-96"></div>
         </div>
       </div>
@@ -77,15 +79,13 @@ const Display = () => {
             gl.setClearColor(0x00000000, 0);
           }}
         >
-          {/* Reduced lighting intensity */}
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[5, 5, 5]} intensity={0.3} />
-          
-          {/* Removed Environment which was adding extra lighting */}
-          
+          <ambientLight intensity={1} />
+          <directionalLight position={[5, 5, 5]} intensity={0.4} />
+          <Environment preset="sunset" />
+
           <CubeModel 
-            position={[0, 0.4, 0]} 
-            scale={4.1} 
+            position={[0.4, 0.4, 0]} 
+            scale={3} 
             rotationY={cubeRotation}
           />
           <OrbitControls
@@ -93,7 +93,7 @@ const Display = () => {
             enablePan={false}
             minDistance={3}
             maxDistance={10}
-            enabled={false}
+            enabled={false} // Disable manual controls to focus on scroll sync
           />
         </Canvas>
       </div>
