@@ -92,7 +92,7 @@ const Display = () => {
 
             <div className="w-1/2 h-full">
                 <Canvas
-                    camera={{ position: [3, 1.2, 5], fov: 50 }}
+                    camera={{ position: [3, 1.2, 5.5], fov: 50 }}
                     gl={{ alpha: true }}
                     onCreated={({ gl }) => gl.setClearColor(0x00000000, 0)}
                 >
