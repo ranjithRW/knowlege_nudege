@@ -48,7 +48,7 @@ const Display = () => {
       const sectionHeight = scrollHeight / sectionCount;
       const sectionIndex = Math.min(Math.floor(scrollTop / sectionHeight), sectionCount - 1);
 
-      const newRotation = sectionIndex * (Math.PI / 5); // Rotate 90° per section
+      const newRotation = sectionIndex * (Math.PI / 2); // Rotate 90° per section
       setTargetRotation(newRotation);
     };
 
@@ -68,7 +68,7 @@ const Display = () => {
           {paragraphData.map((item, index) => (
             <div 
               key={index}
-              className="p-6 bg-white rounded-lg shadow-md min-h-[300px] flex flex-col justify-center"
+              className="p-6 bg-white rounded-lg shadow-md min-h-[250px] flex flex-col justify-center"
             >
               <h3 className="text-2xl font-semibold mb-4 text-blue-600">{item.title}</h3>
               <p className="text-gray-700 text-lg leading-relaxed">{item.content}</p>
