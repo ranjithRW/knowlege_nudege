@@ -9,10 +9,10 @@ function CubeModel({ rotationY, ...props }) {
 
   // Load the four textures
   const textures = useTexture({
-    front: '/front.jpg',
-    back: '/front.jpg',
-    left: '/front.jpg',
-    right: '/front.jpg',
+    front: '/01.png',
+    back: '/02.png',
+    left: '/03.png',
+    right: '/04.png',
   });
 
   // Create materials array for each face
