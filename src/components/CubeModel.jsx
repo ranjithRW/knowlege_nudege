@@ -1,38 +1,32 @@
-import React, { useRef, useMemo, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, OrbitControls, useTexture } from '@react-three/drei';
+import React, { useRef, useMemo } from 'react';
+import { useFrame, useLoader } from '@react-three/fiber';
+import { TextureLoader } from 'three';
 import * as THREE from 'three';
 
-// CubeModel component with rotation control
 function CubeModel({ rotationY, ...props }) {
   const meshRef = useRef();
 
-  // Load the four textures
-  const textures = useTexture({
-    front: '/01.png',
-    back: '/02.png',
-    left: '/03.png',
-    right: '/04.png',
-  });
+  // Load 4 textures
+  const textures = useLoader(TextureLoader, [
+    '/04.png', // front
+    '/02.png', // back
+    '/03.png', // left
+    '/01.png'  // right
+  ]);
 
-  // Create materials array for each face
   const materials = useMemo(() => [
-    new THREE.MeshStandardMaterial({ map: textures.right }), // Right face (+X)
-    new THREE.MeshStandardMaterial({ map: textures.left }),  // Left face (-X)
-    new THREE.MeshStandardMaterial({ color: '#ffffff' }),       // Top face (+Y)
-    new THREE.MeshStandardMaterial({ color: '#ffffff' }),       // Bottom face (-Y)
-    new THREE.MeshStandardMaterial({ map: textures.front }), // Front face (+Z)
-    new THREE.MeshStandardMaterial({ map: textures.back }),  // Back face (-Z)
+    new THREE.MeshStandardMaterial({ map: textures[3] }), // Right (+X)
+    new THREE.MeshStandardMaterial({ map: textures[2] }), // Left (-X)
+    new THREE.MeshStandardMaterial({ color: '#ffffff' }), // Top (+Y)
+    new THREE.MeshStandardMaterial({ color: '#ffffff' }), // Bottom (-Y)
+    new THREE.MeshStandardMaterial({ map: textures[0] }), // Front (+Z)
+    new THREE.MeshStandardMaterial({ map: textures[1] }), // Back (-Z)
   ], [textures]);
 
-  // Update rotation based on scroll
+  // Smoothly update rotation
   useFrame(() => {
     if (meshRef.current) {
-      meshRef.current.rotation.y = THREE.MathUtils.lerp(
-        meshRef.current.rotation.y,
-        rotationY,
-        0.1
-      );
+      meshRef.current.rotation.y += (rotationY - meshRef.current.rotation.y) * 0.1;
     }
   });
 
@@ -43,4 +37,4 @@ function CubeModel({ rotationY, ...props }) {
   );
 }
 
-export default CubeModel
+export default CubeModel;
