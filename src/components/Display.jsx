@@ -8,7 +8,7 @@ const SmoothCube = ({ targetRotation }) => {
     <CubeModel
       rotationY={targetRotation}
       position={[0.4, 0.4, 0]}
-      scale={3}
+      scale={2.6}
     />
   );
 };
@@ -61,14 +61,14 @@ const Display = () => {
       {/* Left Scrollable Content */}
       <div
         ref={scrollContainerRef}
-        className="w-1/2 p-8 overflow-y-auto bg-gray-100 h-full scroll-smooth"
+        className="w-1/2 p-8 overflow-y-auto scroll-smooth"
       >
         <h2 className="text-3xl font-bold mb-6">Cube Information</h2>
-        <div className="space-y-20 pb-60">
+        <div className="space-y-20">
           {paragraphData.map((item, index) => (
             <div 
               key={index}
-              className="p-6 bg-white rounded-lg shadow-md min-h-[500px] flex flex-col justify-center"
+              className="p-6 bg-white rounded-lg shadow-md min-h-[300px] flex flex-col justify-center"
             >
               <h3 className="text-2xl font-semibold mb-4 text-blue-600">{item.title}</h3>
               <p className="text-gray-700 text-lg leading-relaxed">{item.content}</p>
